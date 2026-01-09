@@ -150,6 +150,7 @@
 .btn-group-sm > .btn {
   --#{$prefix}btn-line-height: #{$input-btn-line-height-sm};
   --#{$prefix}btn-icon-size: #{$input-btn-icon-size-sm};
+  --#{$prefix}btn-padding-y: #{$input-btn-padding-y-sm};
 }
 
 .btn-lg,

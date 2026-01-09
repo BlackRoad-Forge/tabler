@@ -1,35 +1,61 @@
-.nav-segmented {
-  --#{$prefix}nav-bg: var(--#{$prefix}bg-surface-tertiary);
-  --#{$prefix}nav-padding: 2px;
-  --#{$prefix}nav-height: 2.5rem;
-  --#{$prefix}nav-gap: 0.25rem;
-  --#{$prefix}nav-active-bg: var(--#{$prefix}bg-surface);
-  --#{$prefix}nav-font-size: inherit;
-  --#{$prefix}nav-radius: 6px;
+$nav-segmented-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+$nav-segmented-padding: 1px !default;
+$nav-segmented-gap: var(--#{$prefix}nav-segmented-padding) !default;
+$nav-segmented-active-bg: var(--#{$prefix}bg-surface) !default;
+$nav-segmented-font-size: $input-btn-font-size !default;
+$nav-segmented-font-weight: $btn-font-weight !default;
 
-  --#{$prefix}nav-link-disabled-color: var(--#{$prefix}disabled-color);
-  --#{$prefix}nav-link-gap: 0.25rem;
-  --#{$prefix}nav-link-padding-x: 0.75rem;
-  --#{$prefix}nav-link-icon-size: 1.25rem;
+$nav-segmented-line-height: $input-btn-line-height !default;
+$nav-segmented-radius: var(--#{$prefix}border-radius) !default;
+$nav-segmented-border-width: 1px !default;
+$nav-segmented-border-color: var(--#{$prefix}border-light-color-translucent) !default;
+
+$nav-segmented-link-disabled-color: var(--#{$prefix}disabled-color) !default;
+$nav-segmented-link-gap: 0.25rem !default;
+$nav-segmented-link-padding-x: $input-btn-padding-x !default;
+$nav-segmented-link-padding-y: $input-btn-padding-y !default;
+$nav-segmented-link-icon-size: $input-btn-icon-size !default;
+$nav-segmented-link-border-width: $input-btn-border-width !default;
+
+.nav-segmented {
+  --#{$prefix}nav-segmented-bg: #{$nav-segmented-bg};
+  --#{$prefix}nav-segmented-padding: #{$nav-segmented-padding};
+  --#{$prefix}nav-segmented-gap: #{$nav-segmented-gap};
+  --#{$prefix}nav-segmented-active-bg: #{$nav-segmented-active-bg};
+  --#{$prefix}nav-segmented-font-size: #{$nav-segmented-font-size};
+  --#{$prefix}nav-segmented-line-height: #{$nav-segmented-line-height};
+  --#{$prefix}nav-segmented-radius: #{$nav-segmented-radius};
+  --#{$prefix}nav-segmented-border-width: #{$nav-segmented-border-width};
+  --#{$prefix}nav-segmented-border-color: #{$nav-segmented-border-color};
+  
+  --#{$prefix}nav-segmented-link-disabled-color: #{$nav-segmented-link-disabled-color};
+  --#{$prefix}nav-segmented-link-gap: #{$nav-segmented-link-gap};
+  --#{$prefix}nav-segmented-link-padding-x: #{$nav-segmented-link-padding-x};
+  --#{$prefix}nav-segmented-link-padding-y: #{$nav-segmented-link-padding-y};
+  --#{$prefix}nav-segmented-link-icon-size: #{$nav-segmented-link-icon-size};
+  --#{$prefix}nav-segmented-link-border-width: #{$nav-segmented-link-border-width};
   display: inline-flex;
   flex-wrap: wrap;
-  gap: var(--#{$prefix}nav-gap);
-  padding: var(--#{$prefix}nav-padding);
+  gap: var(--#{$prefix}nav-segmented-gap);
+  padding: var(--#{$prefix}nav-segmented-padding);
   list-style: none;
-  background: var(--#{$prefix}nav-bg);
-  border-radius: calc(var(--#{$prefix}nav-radius) + var(--#{$prefix}nav-padding));
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  background: var(--#{$prefix}nav-segmented-bg);
+  border-radius: calc(var(--#{$prefix}nav-segmented-radius) + var(--#{$prefix}nav-segmented-padding));
+  border: var(--#{$prefix}nav-segmented-border-width) solid var(--#{$prefix}nav-segmented-border-color);
 
   .nav-link {
+    --nav-segmented-link-height: calc(var(--#{$prefix}nav-segmented-line-height) + 2 * var(--#{$prefix}nav-segmented-link-padding-y) + 2 * var(--#{$prefix}nav-segmented-link-border-width) - 2 * var(--#{$prefix}nav-segmented-border-width) - 2 * var(--#{$prefix}nav-segmented-padding));
     display: inline-flex;
-    gap: calc(0.25rem + var(--#{$prefix}nav-link-gap));
+    gap: calc(0.25rem + var(--#{$prefix}nav-segmented-link-gap));
     align-items: center;
     margin: 0;
-    font-size: var(--#{$prefix}nav-font-size);
-    min-width: calc(var(--#{$prefix}nav-height) - 2 * var(--#{$prefix}nav-padding));
-    height: calc(var(--#{$prefix}nav-height) - 2 * var(--#{$prefix}nav-padding));
-    padding: 0 calc(var(--#{$prefix}nav-link-padding-x) - 2px);
-    border: 1px solid transparent;
+    font-size: var(--#{$prefix}nav-segmented-font-size);
+    line-height: var(--#{$prefix}nav-segmented-line-height);
+    font-weight: #{$nav-segmented-font-weight};
+    min-width: var(--nav-segmented-link-height);
+    height: var(--nav-segmented-link-height);
+    padding: calc(var(--#{$prefix}nav-segmented-link-padding-y) - var(--#{$prefix}nav-segmented-border-width)) calc(var(--#{$prefix}nav-segmented-link-padding-x) - 2 * var(--#{$prefix}nav-segmented-border-width));
+    border: var(--#{$prefix}nav-segmented-link-border-width) solid transparent;
     background: transparent;
     color: var(--#{$prefix}secondary);
     text-align: center;
@@ -39,7 +65,7 @@
     transition:
       background-color $transition-time,
       color $transition-time;
-    border-radius: var(--#{$prefix}nav-radius);
+    border-radius: var(--#{$prefix}nav-segmented-radius);
     flex-grow: 1;
     justify-content: center;
 
@@ -51,15 +77,15 @@
 
     &.disabled,
     &:disabled {
-      color: var(--#{$prefix}nav-link-disabled-color);
+      color: var(--#{$prefix}nav-segmented-link-disabled-color);
       cursor: not-allowed;
     }
   }
 
-  .nav-link-input:checked + .nav-link,
+  .nav-link-input:checked+.nav-link,
   .nav-link.active {
     color: var(--#{$prefix}body-color);
-    background: var(--#{$prefix}nav-active-bg);
+    background: var(--#{$prefix}nav-segmented-active-bg);
     border-color: var(--#{$prefix}border-color);
   }
 
@@ -68,8 +94,8 @@
   }
 
   .nav-link-icon {
-    width: var(--#{$prefix}nav-link-icon-size);
-    height: var(--#{$prefix}nav-link-icon-size);
+    width: var(--#{$prefix}nav-segmented-link-icon-size);
+    height: var(--#{$prefix}nav-segmented-link-icon-size);
     margin: 0 -0.25rem;
     color: inherit;
   }
@@ -84,19 +110,21 @@
 }
 
 .nav-sm {
-  --#{$prefix}nav-height: 2rem;
-  --#{$prefix}nav-font-size: var(--tblr-font-size-h5);
-  --#{$prefix}nav-radius: 4px;
-  --#{$prefix}nav-link-padding-x: 0.5rem;
-  --#{$prefix}nav-link-gap: 0.25rem;
-  --#{$prefix}nav-link-icon-size: 1rem;
+  --#{$prefix}nav-segmented-font-size: #{$input-btn-font-size-sm};
+  --#{$prefix}nav-segmented-line-height: #{$input-btn-line-height-sm};
+  --#{$prefix}nav-segmented-radius: var(--#{$prefix}border-radius);
+  --#{$prefix}nav-segmented-link-padding-x: #{$input-btn-padding-x-sm};
+  --#{$prefix}nav-segmented-link-padding-y: #{$input-btn-padding-y-sm};
+  --#{$prefix}nav-segmented-link-gap: #{$nav-segmented-link-gap};
+  --#{$prefix}nav-segmented-link-icon-size: #{$input-btn-icon-size-sm};
 }
 
 .nav-lg {
-  --#{$prefix}nav-height: 3rem;
-  --#{$prefix}nav-font-size: var(--tblr-font-size-h3);
-  --#{$prefix}nav-radius: 8px;
-  --#{$prefix}nav-link-padding-x: 1rem;
-  --#{$prefix}nav-link-gap: 0.5rem;
-  --#{$prefix}nav-link-icon-size: 1.5rem;
+  --#{$prefix}nav-segmented-font-size: #{$input-btn-font-size-lg};
+  --#{$prefix}nav-segmented-line-height: #{$input-btn-line-height-lg};
+  --#{$prefix}nav-segmented-radius: var(--#{$prefix}border-radius);
+  --#{$prefix}nav-segmented-link-padding-x: #{$input-btn-padding-x-lg};
+  --#{$prefix}nav-segmented-link-padding-y: #{$input-btn-padding-y-lg};
+  --#{$prefix}nav-segmented-link-gap: #{$nav-segmented-link-gap};
+  --#{$prefix}nav-segmented-link-icon-size: #{$input-btn-icon-size-lg};
 }

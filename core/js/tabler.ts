@@ -8,6 +8,7 @@ import './src/switch-icon'
 import './src/tab'
 import './src/toast'
 import './src/sortable'
+import './src/datepicker'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'

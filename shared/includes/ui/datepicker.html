@@ -4,12 +4,16 @@
 {% if include.id %}
 
 {% capture input %}
-<input class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="datepicker-{{ include.id }}" value="{{ value }}"/>
+<input class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="datepicker-{{ include.id }}" value="{{ value }}" data-bs-toggle="datepicker"{% if include.selection-mode %} data-bs-selection-mode="{{ include.selection-mode }}"{% endif %}{% if include.placement %} data-bs-placement="{{ include.placement }}"{% endif %}{% if include.locale %} data-bs-locale="{{ include.locale }}"{% endif %}{% if include.date-min %} data-bs-date-min="{{ include.date-min }}"{% endif %}{% if include.date-max %} data-bs-date-max="{{ include.date-max }}"{% endif %}{% if include.selected-dates %} data-bs-selected-dates="{{ include.selected-dates }}"{% elsif value %} data-bs-selected-dates="{{ value }}"{% endif %}{% if include.display-months-count %} data-bs-display-months-count="{{ include.display-months-count }}"{% endif %}{% if include.first-weekday %} data-bs-first-weekday="{{ include.first-weekday }}"{% endif %}{% if include.datepicker-theme %} data-bs-datepicker-theme="{{ include.datepicker-theme }}"{% endif %}/>
 {%- endcapture %}
 
 
 {% if include.inline %}
-	<div class="datepicker-inline" id="datepicker-{{ include.id }}"></div>
+	<div class="datepicker-inline" id="datepicker-{{ include.id }}" data-bs-toggle="datepicker" data-bs-inline="true"{% if include.selection-mode %} data-bs-selection-mode="{{ include.selection-mode }}"{% endif %}{% if include.locale %} data-bs-locale="{{ include.locale }}"{% endif %}{% if include.date-min %} data-bs-date-min="{{ include.date-min }}"{% endif %}{% if include.date-max %} data-bs-date-max="{{ include.date-max }}"{% endif %}{% if include.selected-dates %} data-bs-selected-dates="{{ include.selected-dates }}"{% elsif value %} data-bs-selected-dates="{{ value }}"{% endif %}{% if include.display-months-count %} data-bs-display-months-count="{{ include.display-months-count }}"{% endif %}{% if include.first-weekday %} data-bs-first-weekday="{{ include.first-weekday }}"{% endif %}{% if include.datepicker-theme %} data-bs-datepicker-theme="{{ include.datepicker-theme }}"{% endif %}>
+		{% if include.hidden-input %}
+		<input type="hidden" name="{{ include.hidden-input }}" value="{{ value }}">
+		{% endif %}
+	</div>
 {% elsif include.layout == 'icon' %}
 	<div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
 		{{ input | replace: include.class, '' }}
@@ -22,71 +26,6 @@
 	</div>
 {% else %}
 	{{ input }}
-{% endif %}
-
-{% capture script %}
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		{% if environment == 'development' %}
-		window.tabler_datepicker = window.tabler_datepicker || {};
-		{% endif %}
-
-		if (window.Calendar) {
-			var element = document.getElementById('datepicker-{{ include.id }}');
-			{% if include.inline %}
-			var calendar = new Calendar('#datepicker-{{ include.id }}', {
-				settings: {
-					type: 'default',
-					selected: {
-						dates: [element.getAttribute('data-value') || '{{ value }}'],
-					},
-				},
-				actions: {
-					clickDay(event, dates) {
-						if (dates[0]) {
-							element.setAttribute('data-value', dates[0]);
-						}
-					},
-				},
-			});
-			calendar.init();
-			{% if environment == 'development' %}
-			window.tabler_datepicker["datepicker-{{ include.id }}"] = calendar;
-			{% endif %}
-			{% else %}
-			var calendar = new Calendar('#datepicker-{{ include.id }}', {
-				settings: {
-					type: 'default',
-					inputMode: true,
-					selected: {
-						dates: [element.value || '{{ value }}'],
-					},
-				},
-				actions: {
-					clickDay(event, dates) {
-						if (dates[0]) {
-							element.value = dates[0];
-							calendar.hide();
-						}
-					},
-				},
-			});
-			calendar.init();
-			{% if environment == 'development' %}
-			window.tabler_datepicker["datepicker-{{ include.id }}"] = calendar;
-			{% endif %}
-			{% endif %}
-		}
-	});
-</script>
-{%- endcapture %}
-
-{% if include.show-scripts %}
-{{ script }}
-{% else %}
-{% capture_script %}
-{{ script }}
-{% endcapture_script %}
 {% endif %}
 
 {% endif %}

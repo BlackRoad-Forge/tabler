@@ -62,10 +62,13 @@
       "https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_KEY"
     ]
   },
-  "litepicker": {
-    "npm": "litepicker",
+  "vanilla-calendar-pro": {
+    "npm": "vanilla-calendar-pro",
     "js": [
-      "dist/litepicker.js"
+      "dist/index.js"
+    ],
+    "css": [
+      "styles/index.css"
     ]
   },
   "tom-select": {

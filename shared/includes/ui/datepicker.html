@@ -31,14 +31,52 @@
 		window.tabler_datepicker = window.tabler_datepicker || {};
 		{% endif %}
 
-		window.Litepicker && ({% if environment == 'development' %}window.tabler_datepicker["datepicker-{{ include.id }}"] = {% endif %}new Litepicker({
-			element: document.getElementById('datepicker-{{ include.id }}'),
-			buttonText: {
-				previousMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-left" %}{%- endcapture %}{{ icon | strip }}`,
-				nextMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-right" %}{%- endcapture %}{{ icon | strip }}`,
-			},
-			{% if include.inline %}inlineMode: true,{% endif %}
-		}));
+		if (window.Calendar) {
+			var element = document.getElementById('datepicker-{{ include.id }}');
+			{% if include.inline %}
+			var calendar = new Calendar('#datepicker-{{ include.id }}', {
+				settings: {
+					type: 'default',
+					selected: {
+						dates: [element.getAttribute('data-value') || '{{ value }}'],
+					},
+				},
+				actions: {
+					clickDay(event, dates) {
+						if (dates[0]) {
+							element.setAttribute('data-value', dates[0]);
+						}
+					},
+				},
+			});
+			calendar.init();
+			{% if environment == 'development' %}
+			window.tabler_datepicker["datepicker-{{ include.id }}"] = calendar;
+			{% endif %}
+			{% else %}
+			var calendar = new Calendar('#datepicker-{{ include.id }}', {
+				settings: {
+					type: 'default',
+					inputMode: true,
+					selected: {
+						dates: [element.value || '{{ value }}'],
+					},
+				},
+				actions: {
+					clickDay(event, dates) {
+						if (dates[0]) {
+							element.value = dates[0];
+							calendar.hide();
+						}
+					},
+				},
+			});
+			calendar.init();
+			{% if environment == 'development' %}
+			window.tabler_datepicker["datepicker-{{ include.id }}"] = calendar;
+			{% endif %}
+			{% endif %}
+		}
 	});
 </script>
 {%- endcapture %}

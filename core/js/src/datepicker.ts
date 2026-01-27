@@ -1,4 +1,5 @@
 // Datepicker component using vanilla-calendar-pro
+import { Calendar } from 'vanilla-calendar-pro'
 
 type DatepickerTheme = 'light' | 'dark' | 'auto' | null
 type SelectionMode = 'single' | 'multiple' | 'multiple-ranged'
@@ -24,7 +25,7 @@ interface DatepickerOptions {
 class Datepicker {
   private element: HTMLElement
   private options: DatepickerOptions
-  private calendar: InstanceType<typeof window.Calendar> | null = null
+  private calendar: InstanceType<typeof Calendar> | null = null
   private isShown: boolean = false
   private isInline: boolean = false
   private isInput: boolean = false
@@ -42,7 +43,7 @@ class Datepicker {
   }
 
   private initCalendar(): void {
-    if (!window.Calendar) {
+    if (!Calendar) {
       return
     }
 
@@ -67,7 +68,7 @@ class Datepicker {
     // vanilla-calendar-pro uses selector string (e.g., '#element-id')
     const calendarSelector = `#${this.element.id}`
 
-    this.calendar = new window.Calendar(calendarSelector, calendarOptions)
+    this.calendar = new Calendar(calendarSelector, calendarOptions)
     this.calendar.init()
 
     this.setupThemeObserver()
@@ -423,107 +424,109 @@ class Datepicker {
   }
 }
 
-// Initialize datepickers on page load
-const datepickerElements: HTMLElement[] = [].slice.call(
-  document.querySelectorAll<HTMLElement>('[data-bs-toggle="datepicker"]')
-)
-
-datepickerElements.forEach(function (element: HTMLElement) {
-  const options: DatepickerOptions = {}
-
-  // Read options from data attributes
-  const inline = element.getAttribute('data-bs-inline')
-  if (inline !== null) {
-    options.inline = inline === 'true'
-  }
-
-  const displayMonthsCount = element.getAttribute('data-bs-display-months-count')
-  if (displayMonthsCount) {
-    options.displayMonthsCount = parseInt(displayMonthsCount, 10)
-  }
-
-  const firstWeekday = element.getAttribute('data-bs-first-weekday')
-  if (firstWeekday) {
-    options.firstWeekday = parseInt(firstWeekday, 10)
-  }
-
-  const locale = element.getAttribute('data-bs-locale')
-  if (locale) {
-    options.locale = locale
-  }
-
-  const selectionMode = element.getAttribute('data-bs-selection-mode')
-  if (selectionMode) {
-    options.selectionMode = selectionMode as SelectionMode
-  }
-
-  const placement = element.getAttribute('data-bs-placement')
-  if (placement) {
-    options.placement = placement as Placement
-  }
-
-  const datepickerTheme = element.getAttribute('data-bs-datepicker-theme')
-  if (datepickerTheme) {
-    options.datepickerTheme = datepickerTheme as DatepickerTheme
-  }
-
-  const selectedDates = element.getAttribute('data-bs-selected-dates')
-  if (selectedDates) {
-    options.selectedDates = selectedDates.split(',').map(d => d.trim())
-  }
-
-  const dateMin = element.getAttribute('data-bs-date-min')
-  if (dateMin) {
-    options.dateMin = dateMin
-  }
-
-  const dateMax = element.getAttribute('data-bs-date-max')
-  if (dateMax) {
-    options.dateMax = dateMax
-  }
-
-  // Initialize inline datepickers immediately
-  if (options.inline || element.getAttribute('data-bs-inline') === 'true') {
-    new Datepicker(element, options)
-    return
-  }
-
-  // For input elements, show on focus
-  if (element.tagName === 'INPUT') {
-    element.addEventListener('focusin', function () {
-      const datepicker = new Datepicker(element, options)
-      ;(element as any).__datepicker = datepicker
-      datepicker.show()
-    })
-    return
-  }
-
-  // For other elements, toggle on click
-  element.addEventListener('click', function (event) {
-    event.preventDefault()
-    let datepicker = (element as any).__datepicker
-    if (!datepicker) {
-      datepicker = new Datepicker(element, options)
-      ;(element as any).__datepicker = datepicker
-    }
-    datepicker.toggle()
-  })
-})
-
-// Initialize inline datepickers on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-  const inlineDatepickers: HTMLElement[] = [].slice.call(
-    document.querySelectorAll<HTMLElement>('[data-bs-toggle="datepicker"][data-bs-inline="true"]')
+// Initialize datepickers
+function initializeDatepickers(): void {
+  const datepickerElements: HTMLElement[] = [].slice.call(
+    document.querySelectorAll<HTMLElement>('[data-bs-toggle="datepicker"]')
   )
 
-  inlineDatepickers.forEach(function (element: HTMLElement) {
-    if (!(element as any).__datepicker) {
-      const options: DatepickerOptions = {
-        inline: true
-      }
-      new Datepicker(element, options)
+  datepickerElements.forEach(function (element: HTMLElement) {
+    // Skip if already initialized
+    if ((element as any).__datepicker) {
+      return
     }
+
+    const options: DatepickerOptions = {}
+
+    // Read options from data attributes
+    const inline = element.getAttribute('data-bs-inline')
+    if (inline !== null) {
+      options.inline = inline === 'true'
+    }
+
+    const displayMonthsCount = element.getAttribute('data-bs-display-months-count')
+    if (displayMonthsCount) {
+      options.displayMonthsCount = parseInt(displayMonthsCount, 10)
+    }
+
+    const firstWeekday = element.getAttribute('data-bs-first-weekday')
+    if (firstWeekday) {
+      options.firstWeekday = parseInt(firstWeekday, 10)
+    }
+
+    const locale = element.getAttribute('data-bs-locale')
+    if (locale) {
+      options.locale = locale
+    }
+
+    const selectionMode = element.getAttribute('data-bs-selection-mode')
+    if (selectionMode) {
+      options.selectionMode = selectionMode as SelectionMode
+    }
+
+    const placement = element.getAttribute('data-bs-placement')
+    if (placement) {
+      options.placement = placement as Placement
+    }
+
+    const datepickerTheme = element.getAttribute('data-bs-datepicker-theme')
+    if (datepickerTheme) {
+      options.datepickerTheme = datepickerTheme as DatepickerTheme
+    }
+
+    const selectedDates = element.getAttribute('data-bs-selected-dates')
+    if (selectedDates) {
+      options.selectedDates = selectedDates.split(',').map(d => d.trim())
+    }
+
+    const dateMin = element.getAttribute('data-bs-date-min')
+    if (dateMin) {
+      options.dateMin = dateMin
+    }
+
+    const dateMax = element.getAttribute('data-bs-date-max')
+    if (dateMax) {
+      options.dateMax = dateMax
+    }
+
+    // Initialize inline datepickers immediately
+    if (options.inline || element.getAttribute('data-bs-inline') === 'true') {
+      new Datepicker(element, options)
+      return
+    }
+
+    // For input elements, show on focus
+    if (element.tagName === 'INPUT') {
+      element.addEventListener('focusin', function () {
+        let datepicker = (element as any).__datepicker
+        if (!datepicker) {
+          datepicker = new Datepicker(element, options)
+          ;(element as any).__datepicker = datepicker
+        }
+        datepicker.show()
+      })
+      return
+    }
+
+    // For other elements, toggle on click
+    element.addEventListener('click', function (event) {
+      event.preventDefault()
+      let datepicker = (element as any).__datepicker
+      if (!datepicker) {
+        datepicker = new Datepicker(element, options)
+        ;(element as any).__datepicker = datepicker
+      }
+      datepicker.toggle()
+    })
   })
-})
+}
+
+// Initialize on DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeDatepickers)
+} else {
+  // DOM is already ready
+  initializeDatepickers()
+}
 
 export default Datepicker

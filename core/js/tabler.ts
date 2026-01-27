@@ -1,5 +1,6 @@
 import './src/autosize'
 import './src/countup'
+import './src/datepicker'
 import './src/input-mask'
 import './src/dropdown'
 import './src/tooltip'
@@ -8,7 +9,6 @@ import './src/switch-icon'
 import './src/tab'
 import './src/toast'
 import './src/sortable'
-import './src/datepicker'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'

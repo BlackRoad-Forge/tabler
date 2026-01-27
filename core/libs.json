@@ -62,15 +62,6 @@
       "https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_KEY"
     ]
   },
-  "vanilla-calendar-pro": {
-    "npm": "vanilla-calendar-pro",
-    "js": [
-      "dist/index.js"
-    ],
-    "css": [
-      "styles/index.css"
-    ]
-  },
   "tom-select": {
     "npm": "tom-select",
     "js": [

@@ -20,12 +20,12 @@ permalink: cropper.html
 				<div class="row g-3">
 					<div class="col-lg-8">
 						{% assign img-src = page | relative | append: '/static/photos/' | append: cropper-photo.file %}
-						{% include "ui/cropper.html" id="basic" src=img-src alt=cropper-photo.title container="#cropper-container-basic" %}
+						{% include "ui/cropper.html" id="basic" src=img-src alt=cropper-photo.title preview="#cropper-preview-basic" ratio="4x3" %}
 					</div>
 					<div class="col-lg-4">
 						<div class="text-secondary mb-2">Preview</div>
 						<div class="ratio ratio-1x1 border rounded bg-white overflow-hidden">
-							<div class="w-100 h-100" id="cropper-preview-basic"></div>
+							<cropper-viewer class="w-100 h-100" selection="#cropper-selection-basic"></cropper-viewer>
 						</div>
 					</div>
 				</div>

@@ -1,11 +1,12 @@
 {% assign id = include.id | default: "default" %}
 {% assign src = include.src %}
 {% assign alt = include.alt | default: "Image" %}
-{% assign ratioClass = include.ratioClass | default: "4x3" %}
+{% assign ratio = include.ratio | default: "4x3" %}
 {% assign containerId = "cropper-container-" | append: id %}
+{% assign selectionId = "cropper-selection-" | append: id %}
 
 <div class="cropp {% if include.containerClass %}{{ include.containerClass }}{% endif %}">
-	<div class="ratio ratio-{{ ratioClass }}" id="{{ containerId }}">
+	<div class="ratio ratio-{{ ratio }}" id="{{ containerId }}">
 		<img id="cropper-{{ id }}" src="{{ src }}" alt="{{ alt }}"
 			class="img-fluid{% if include.class %} {{ include.class }}{% endif %}" />
 	</div>
@@ -29,11 +30,37 @@
 		}
 
 		var containerSelector = "{% if include.container %}{{ include.container }}{% else %}#{{ containerId }}{% endif %}"
+		var template = '<cropper-canvas background>'
+			+ '<cropper-image rotatable scalable skewable translatable></cropper-image>'
+			+ '<cropper-shade hidden></cropper-shade>'
+			+ '<cropper-handle action="select" plain></cropper-handle>'
+			+ '<cropper-selection id="{{ selectionId }}" initial-coverage="0.5" movable resizable aspect-ratio="1">'
+			+ '<cropper-grid role="grid" bordered covered></cropper-grid>'
+			+ '<cropper-crosshair centered></cropper-crosshair>'
+			+ '<cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>'
+			+ '<cropper-handle action="n-resize"></cropper-handle>'
+			+ '<cropper-handle action="e-resize"></cropper-handle>'
+			+ '<cropper-handle action="s-resize"></cropper-handle>'
+			+ '<cropper-handle action="w-resize"></cropper-handle>'
+			+ '<cropper-handle action="ne-resize"></cropper-handle>'
+			+ '<cropper-handle action="nw-resize"></cropper-handle>'
+			+ '<cropper-handle action="se-resize"></cropper-handle>'
+			+ '<cropper-handle action="sw-resize"></cropper-handle>'
+			+ '</cropper-selection>'
+			+ '</cropper-canvas>';
 		var options = {
-			{%- if include.aspectRatio %}"aspectRatio": {{ include.aspectRatio | replace: "x", "/" }},{% endif %}
 			"container": containerSelector,
+			"template": template,
 		};
 		var instance = new CropperCtor(image, options)
+
+		var viewer = document.querySelector('cropper-viewer[selection="#{{ selectionId }}"]')
+		if (viewer && viewer.parentNode) {
+			var parent = viewer.parentNode
+			parent.removeChild(viewer)
+			parent.appendChild(viewer)
+		}
+
 	})
 </script>
 {% endcapture_script %}

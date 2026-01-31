@@ -1,0 +1,12 @@
+.cropper {
+   border: 1px solid var(--#{$prefix}border-color);
+   border-radius: var(--#{$prefix}border-radius);
+   margin-bottom: 1rem;
+   margin-top: 1rem;
+   padding: 1.25rem 1.5rem;
+
+   // Cropper.js vendor override for cropping canvas
+   .cropper-canvas {
+      height: 360px !important;
+   }
+}

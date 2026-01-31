@@ -1,0 +1,59 @@
+---
+title: Cropper.js
+page-header: Cropper.js
+page-menu: plugins.cropper
+page-libs: [cropperjs]
+layout: default
+permalink: cropper.html
+---
+
+{% assign cropper-photo = photos | where: "horizontal", true | first %}
+{% assign cropper-portrait = photos | where: "horizontal", false | first %}
+
+<div class="row row-cards">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">Basic cropper</h3>
+			</div>
+			<div class="card-body">
+				<div class="row g-3">
+					<div class="col-lg-8">
+						{% assign img-src = page | relative | append: '/static/photos/' | append: cropper-photo.file %}
+						{% include "ui/cropper.html" id="basic" src=img-src alt=cropper-photo.title container="#cropper-container-basic" %}
+					</div>
+					<div class="col-lg-4">
+						<div class="text-secondary mb-2">Preview</div>
+						<div class="ratio ratio-1x1 border rounded bg-white overflow-hidden">
+							<div class="w-100 h-100" id="cropper-preview-basic"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">Square avatar</h3>
+			</div>
+			<div class="card-body">
+				{% assign img-src = page | relative | append: '/static/photos/' | append: cropper-portrait.file %}
+				{% include "ui/cropper.html" id="square" src=img-src alt=cropper-portrait.title %}
+				<p class="text-secondary mt-2 mb-0">Perfect for avatars with a fixed 1:1 aspect ratio.</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">Widescreen banner</h3>
+			</div>
+			<div class="card-body">
+				{% assign img-src = page | relative | append: '/static/photos/' | append: cropper-photo.file %}
+				{% include "ui/cropper.html" id="wide" src=img-src alt=cropper-photo.title  aspectRatio="16/9" %}
+				<p class="text-secondary mt-2 mb-0">Use a 16:9 ratio for hero sections and headers.</p>
+			</div>
+		</div>
+	</div>
+</div>

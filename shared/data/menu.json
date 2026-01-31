@@ -443,6 +443,10 @@
         "url": "colorpicker.html",
         "title": "Color picker"
       },
+      "cropper": {
+        "url": "cropper.html",
+        "title": "Cropper.js"
+      },
       "datatables": {
         "url": "datatables.html",
         "title": "Datatables"

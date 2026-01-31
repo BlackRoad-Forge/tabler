@@ -136,6 +136,12 @@
       "dist/coloris.min.css"
     ]
   },
+  "cropperjs": {
+    "npm": "cropperjs",
+    "js": [
+      "dist/cropper.min.js"
+    ]
+  },
   "typed.js": {
     "npm": "typed.js",
     "js": [

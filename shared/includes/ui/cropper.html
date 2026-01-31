@@ -1,0 +1,39 @@
+{% assign id = include.id | default: "default" %}
+{% assign src = include.src %}
+{% assign alt = include.alt | default: "Image" %}
+{% assign ratioClass = include.ratioClass | default: "4x3" %}
+{% assign containerId = "cropper-container-" | append: id %}
+
+<div class="cropp {% if include.containerClass %}{{ include.containerClass }}{% endif %}">
+	<div class="ratio ratio-{{ ratioClass }}" id="{{ containerId }}">
+		<img id="cropper-{{ id }}" src="{{ src }}" alt="{{ alt }}"
+			class="img-fluid{% if include.class %} {{ include.class }}{% endif %}" />
+	</div>
+</div>
+
+{% capture_script %}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var CropperCtor =
+			window.Cropper && typeof window.Cropper === "function"
+				? window.Cropper
+				: window.Cropper && window.Cropper.default
+
+		if (!CropperCtor) {
+			return
+		} 
+
+		var image = document.getElementById("cropper-{{ id }}")
+		if (!image) {
+			return
+		}
+
+		var containerSelector = "{% if include.container %}{{ include.container }}{% else %}#{{ containerId }}{% endif %}"
+		var options = {
+			{%- if include.aspectRatio %}"aspectRatio": {{ include.aspectRatio | replace: "x", "/" }},{% endif %}
+			"container": containerSelector,
+		};
+		var instance = new CropperCtor(image, options)
+	})
+</script>
+{% endcapture_script %}

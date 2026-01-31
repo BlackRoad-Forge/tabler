@@ -159,6 +159,8 @@
     "choices.js": "^11.1.0",
     "clipboard": "^2.0.11",
     "countup.js": "^2.9.0",
+    "cropperjs": "^2.1.0",
+    "driver.js": "^1.0.0",
     "dropzone": "^6.0.0-beta.2",
     "find-unused-sass-variables": "^6.1.0",
     "flatpickr": "^4.6.13",
@@ -177,8 +179,7 @@
     "star-rating.js": "^4.3.1",
     "tom-select": "^2.4.3",
     "typed.js": "^2.1.0",
-    "typescript": "^5.9.3",
-    "driver.js": "^1.0.0"
+    "typescript": "^5.9.3"
   },
   "directories": {
     "doc": "docs"

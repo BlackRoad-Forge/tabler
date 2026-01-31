@@ -54,12 +54,14 @@
 		};
 		var instance = new CropperCtor(image, options)
 
+		{%- if include.preview %}
 		var viewer = document.querySelector('cropper-viewer[selection="#{{ selectionId }}"]')
 		if (viewer && viewer.parentNode) {
 			var parent = viewer.parentNode
 			parent.removeChild(viewer)
 			parent.appendChild(viewer)
 		}
+		{%- endif %}
 
 	})
 </script>
